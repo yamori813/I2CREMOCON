@@ -184,6 +184,7 @@ ISR(TIMER0_COMPA_vect)
     if(repeat == IR_REPEAT) {
       TCCR0B = 0x00;
       TCCR1 &= ~(1 << COM1A0);
+      TCCR1 &= ~(1 << CS10);
       gosleep = 1;
     } 
   } 
@@ -210,6 +211,7 @@ ISR(TIMER0_COMPA_vect)
       if(repeat == IR_REPEAT) {
         TCCR0B = 0x00;
         TCCR1 &= ~(1 << COM1A0);
+        TCCR1 &= ~(1 << CS10);
         gosleep = 1;
       } 
     }
@@ -237,6 +239,7 @@ ISR(TIMER0_COMPA_vect)
       if(repeat == IR_REPEAT) {
         TCCR0B = 0x00;
         TCCR1 &= ~(1 << COM1A0);
+        TCCR1 &= ~(1 << CS10);
         gosleep = 1;
       } 
     }
@@ -343,6 +346,8 @@ void loop()
   gosleep = 0;
   TinyWireS_stop_check();
 }
+
+
 
 
 
