@@ -21,6 +21,8 @@
  * arduino pin 4 =     OC1B  = PORTB <- _BV(4) = SOIC pin 3 (Analog 2)
  */
 
+#include <avr/sleep.h>
+
 #define I2C_SLAVE_ADDRESS 0x4 // the 7-bit address (remember to change this when adapting this example)
 
 // Get this from https://github.com/rambo/TinyWire
@@ -42,6 +44,7 @@ int curpos;
 int irtype;
 int irlen;
 int repeat;
+int gosleep;
 
 volatile uint8_t ir_data[TWI_RX_BUFFER_SIZE];
 
@@ -181,6 +184,7 @@ ISR(TIMER0_COMPA_vect)
     if(repeat == IR_REPEAT) {
       TCCR0B = 0x00;
       TCCR1 &= ~(1 << COM1A0);
+      gosleep = 1;
     } 
   } 
   else if(irtype == AEHA) {
@@ -206,6 +210,7 @@ ISR(TIMER0_COMPA_vect)
       if(repeat == IR_REPEAT) {
         TCCR0B = 0x00;
         TCCR1 &= ~(1 << COM1A0);
+        gosleep = 1;
       } 
     }
   }
@@ -232,6 +237,7 @@ ISR(TIMER0_COMPA_vect)
       if(repeat == IR_REPEAT) {
         TCCR0B = 0x00;
         TCCR1 &= ~(1 << COM1A0);
+        gosleep = 1;
       } 
     }
   }
@@ -319,6 +325,9 @@ void setup()
 
   digitalWrite(3, HIGH);
 
+  set_sleep_mode(SLEEP_MODE_PWR_DOWN);
+
+  gosleep = 1;
 }
 
 void loop()
@@ -329,14 +338,11 @@ void loop()
    * it needs to be called in a very tight loop in order not to miss any (REMINDER: Do *not* use delay() anywhere, use tws_delay() instead).
    * It will call the function registered via TinyWireS.onReceive(); if there is data in the buffer on stop.
    */
+  if(gosleep)
+    sleep_mode();
+  gosleep = 0;
   TinyWireS_stop_check();
 }
-
-
-
-
-
-
 
 
 
