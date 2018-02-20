@@ -13,7 +13,7 @@ void loop()
 {
   // Panasonic fluorescent ceiling light 2CH(AEHA)
   Wire.beginTransmission(I2CADDR);
-  Wire.write(0x1a);
+  Wire.write(0xa1);
   Wire.write(0x34);
   Wire.write(0x4a);
   Wire.write(0x90);
@@ -24,7 +24,7 @@ void loop()
 
   // AppleRemote menu(NEC)
   Wire.beginTransmission(I2CADDR);
-  Wire.write(0x28);
+  Wire.write(0x82);
   Wire.write(0x77);
   Wire.write(0xe1);
   Wire.write(0xc0);

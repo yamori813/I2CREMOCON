@@ -270,8 +270,8 @@ void receiveEvent(uint8_t howMany)
     ir_data[i] = TinyWireS.receive();
     ++i;
   }
-  irtype = ir_data[0] >> 4;
-  irlen = (ir_data[0] & 0x0f) * 4;
+  irtype = ir_data[0] & 0x0f;
+  irlen = (ir_data[0] >> 4) * 4;
 
   count = 0;
   nextedge = 1;
